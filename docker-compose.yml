@@ -1,0 +1,54 @@
+version: '3.9'
+
+services:
+  cockroachdb:
+    image: cockroachdb/cockroach:v21.2.4
+    command: start-single-node --insecure 
+    volumes:
+      - cockroach-data:/cockroach/cockroach-data
+    ports:
+      - ${COCKROACH_SQL_PORT:-26257}:${COCKROACH_SQL_PORT:-26257}
+      - ${COCKROACH_HTTP_PORT:-18080}:8080
+    environment:
+      - COCKROACH_LOGS_DIR=${COCKROACH_LOGS_DIR:-/cockroach/cockroach-data/logs}
+      - COCKROACH_SQL_PORT=${COCKROACH_SQL_PORT:-26257}
+      - COCKROACH_ADVERTISE_HOST=${COCKROACH_ADVERTISE_HOST:-cockroachdb}
+      - COCKROACH_ADVERTISE_PORT=${COCKROACH_ADVERTISE_PORT:-26257}
+      - COCKROACH_USER=${COCKROACH_USER:-root}
+    # healthcheck:
+    #   test: [ "CMD", "curl", "-f", "http://localhost:8080/_status/health" ]
+    #   interval: 5s
+    #   timeout: 5s
+    #   retries: 5
+    networks:
+      - authentication_net
+
+  authentication:
+    depends_on:
+      - cockroachdb
+    restart: on-failure
+    image: authentication-service
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - authentication_net
+    ports:
+      - ${AUTHENTICATION_SERVICE_PORT:-8080}:${AUTHENTICATION_SERVICE_PORT:-8080}
+    environment:
+      - PORT=${AUTHENTICATION_SERVICE_PORT:-8080}
+      - DB_HOST=${DB_HOST:-cockroachdb}
+      - DB_PORT=${COCKROACH_SQL_PORT:-26257}
+      - DB_NAME=${DB_NAME:-authentication}
+      - DB_USER=${COCKROACH_USER:-root}
+      - DB_PASSWORD=${DB_PASSWORD:-}
+      - DB_SSL_MODE=${DB_SSL_MODE:-disable}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY:-123}
+      - TOKEN_TTL=${TOKEN_TTL:-30m}
+
+volumes:
+  cockroach-data:
+
+networks:
+  authentication_net:
+    driver: bridge

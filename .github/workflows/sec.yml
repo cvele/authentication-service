@@ -1,0 +1,32 @@
+name: Go Sec
+
+on:
+  pull_request:
+    branches: [ main ]
+    types: [ opened, synchronize ]
+
+jobs:
+  gosec:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.19
+
+      - name: Download dependencies
+        run: go mod download
+
+      - name: Run gosec
+        uses: securego/gosec-action@v2
+        with:
+          # Path to the directory containing the Go source files to analyze
+          path: ./
+          # Output format: text, json, yaml, or sonarqube
+          output: text
+          # Severity level (0-3): 0=low, 1=medium, 2=high, 3=critical
+          severity: 1
