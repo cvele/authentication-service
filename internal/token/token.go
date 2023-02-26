@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/cvele/authentication-service/internal/config"
-	"github.com/dgrijalva/jwt-go"
+	"github.com/dgrijalva/jwt-go/v4"
 )
 
 type Claims struct {
@@ -17,7 +17,7 @@ func New(userID string, cfg *config.Config) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &Claims{
 		UserID: userID,
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(cfg.TokenTTL).Unix(),
+			ExpiresAt: jwt.At(time.Now().Add(cfg.TokenTTL)),
 		},
 	})
 
@@ -43,7 +43,7 @@ func Validate(tokenString string, cfg *config.Config) (string, error) {
 		return "", errors.New("invalid token claims")
 	}
 
-	if err := claims.Valid(); err != nil {
+	if err := claims.Valid(&jwt.ValidationHelper{}); err != nil {
 		return "", err
 	}
 
