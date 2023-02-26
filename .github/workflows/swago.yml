@@ -22,7 +22,7 @@ jobs:
       - name: Install Swag
         run: go install github.com/swaggo/swag/cmd/swag@latest
       - name: Generate Swag Documentation
-        run: ${GOPATH}/bin/swag init -g cmd/auth/main.go
+        run: swag init -g cmd/auth/main.go
       - name: Commit changes
         run: |
           git config --global user.email "action@github.com"
