@@ -8,7 +8,7 @@ COPY . .
 
 RUN go install github.com/swaggo/swag/cmd/swag@latest && /go/bin/linux_${GOARCH}/swag init -g cmd/auth/main.go
 
-RUN go mod download
+RUN go mod tidy
 RUN go build -o /app/authentication-service cmd/auth/main.go
 RUN go build -o /app/authentication-migrations cmd/migrations/main.go
 RUN chmod +x /app/authentication-migrations /app/authentication-service
