@@ -7,6 +7,7 @@ import (
 	"github.com/cvele/authentication-service/internal/authentication"
 	"github.com/cvele/authentication-service/internal/config"
 	"github.com/cvele/authentication-service/internal/db"
+	"github.com/cvele/authentication-service/internal/openapi"
 	"github.com/cvele/authentication-service/internal/router"
 	"github.com/rs/zerolog/log"
 )
@@ -38,7 +39,8 @@ func main() {
 	r.HandleFunc("/refresh", api.RefreshHandler).Methods("POST")
 	r.HandleFunc("/validate", api.ValidateHandler).Methods("POST")
 	r.HandleFunc("/register", api.RegisterHandler).Methods("POST")
-	r.HandleFunc("/change-password", api.ChangePasswordHandler).Methods("POST")
+	r.HandleFunc("/change-password", api.ChangePasswordHandler).Methods("PUT")
+	r.HandleFunc("/openapi", openapi.OpenAPIHandler).Methods("GET")
 	r.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 	})

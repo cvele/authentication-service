@@ -17,6 +17,14 @@ type API struct {
 	cfg *config.Config
 	db  db.DB
 }
+type EmptyResponse struct{}
+type ErrorResponse struct {
+	Error string `json:"error"`
+}
+
+type TokenResponse struct {
+	Token string `json:"token"`
+}
 
 func NewAPI(cfg *config.Config, db db.DB) (*API, error) {
 	return &API{
@@ -39,6 +47,18 @@ func (api *API) AuthenticateUser(username string, password string) (bool, string
 	return false, "", nil
 }
 
+// @Summary Authenticate a user
+// @Description Authenticate a user with a username and password
+// @Tags Authentication
+// @Accept json
+// @Produce json
+// @Param username body string true "Username"
+// @Param password body string true "Password"
+// @Success 200 {object} TokenResponse
+// @Failure 400 {object} ErrorResponse
+// @Failure 401 {object} ErrorResponse
+// @Failure 500 {object} ErrorResponse
+// @Router /login [post]
 func (api *API) LoginHandler(w http.ResponseWriter, r *http.Request) {
 	var data struct {
 		Username string `json:"username"`
@@ -63,9 +83,7 @@ func (api *API) LoginHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	err = json.NewEncoder(w).Encode(struct {
-		Token string `json:"token"`
-	}{
+	err = json.NewEncoder(w).Encode(TokenResponse{
 		Token: tokenString,
 	})
 	if err != nil {
@@ -73,6 +91,15 @@ func (api *API) LoginHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// @Summary Refresh an authentication token
+// @Description Refresh an existing token with a new one
+// @Tags Authentication
+// @Produce json
+// @Param token body string true "Token"
+// @Success 200 {object} TokenResponse
+// @Failure 400 {object} ErrorResponse
+// @Failure 401 {object} ErrorResponse
+// @Router /refresh [post]
 func (api *API) RefreshHandler(w http.ResponseWriter, r *http.Request) {
 	var data struct {
 		Token string `json:"token"`
@@ -96,9 +123,7 @@ func (api *API) RefreshHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	err = json.NewEncoder(w).Encode(struct {
-		Token string `json:"token"`
-	}{
+	err = json.NewEncoder(w).Encode(TokenResponse{
 		Token: tokenString,
 	})
 	if err != nil {
@@ -106,6 +131,15 @@ func (api *API) RefreshHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// @Summary Validate a token
+// @Description Validate a JWT token
+// @Tags Authentication
+// @Produce json
+// @Param token body string true "Token"
+// @Success 200 {object} EmptyResponse
+// @Failure 400 {object} ErrorResponse
+// @Failure 401 {object} ErrorResponse
+// @Router /validate [post]
 func (api *API) ValidateHandler(w http.ResponseWriter, r *http.Request) {
 	var data struct {
 		Token string `json:"token"`
@@ -122,27 +156,30 @@ func (api *API) ValidateHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	err := json.NewEncoder(w).Encode(struct{}{})
+	err := json.NewEncoder(w).Encode(EmptyResponse{})
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
 
-type RegisterRequestBody struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
-}
-
-type RegisterResponseBody struct {
-	ID string `json:"id"`
-}
-type RegisterRequest struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
-}
-
+// @Summary Register a user
+// @Description Register a new user with a username and password
+// @Tags Authentication
+// @Accept json
+// @Produce json
+// @Param username body string true "Username"
+// @Param password body string true "Password"
+// @Success 201 {object} EmptyResponse
+// @Failure 400 {object} ErrorResponse
+// @Failure 409 {object} ErrorResponse
+// @Failure 500 {object} ErrorResponse
+// @Router /register [post]
 func (api *API) RegisterHandler(w http.ResponseWriter, r *http.Request) {
+	type RegisterRequest struct {
+		Username string `json:"username"`
+		Password string `json:"password"`
+	}
 	// Read the request body.
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
@@ -199,6 +236,19 @@ func (api *API) RegisterHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 }
 
+// @Summary Change Password
+// @Description Change a user's password
+// @Tags Authentication
+// @Produce json
+// @Param old_password body string true "Old Password"
+// @Param new_password body string true "New Password"
+// @Security BearerAuth
+// @Success 200 {object} EmptyResponse
+// @Failure 400 {object} ErrorResponse
+// @Failure 401 {object} ErrorResponse
+// @Failure 404 {object} ErrorResponse
+// @Failure 500 {object} ErrorResponse
+// @Router /change-password [put]
 func (api *API) ChangePasswordHandler(w http.ResponseWriter, r *http.Request) {
 	// Read the request body.
 	body, err := io.ReadAll(r.Body)
