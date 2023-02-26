@@ -30,6 +30,7 @@ jobs:
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
           if git diff --quiet; then
+            git diff
             echo "No changes detected in Swagger docs. Skipping commit and push."
           else
             git add .
