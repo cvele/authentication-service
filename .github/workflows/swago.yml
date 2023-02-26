@@ -32,7 +32,7 @@ jobs:
           git config --global user.name "GitHub Action"
           git add .
           git commit -m "Update Swagger Documentation"
-          if git diff --quiet; then
+          if ! git diff --exit-code main origin/main --quiet; then
             git diff
             echo "No changes detected in Swagger docs. Skipping push."
           else
