@@ -1,0 +1,29 @@
+name: Generate Swag Documentation
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install Swag
+        run: go install github.com/swaggo/swag/cmd/swag@latest
+      - name: Generate Swag Documentation
+        run: swag init -g cmd/auth/main.go
+      - name: Commit changes
+        run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+          git add .
+          git commit -m "Update Swagger Documentation"
+          git push origin main
+
