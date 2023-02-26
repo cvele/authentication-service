@@ -63,11 +63,14 @@ func (api *API) LoginHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(struct {
+	err = json.NewEncoder(w).Encode(struct {
 		Token string `json:"token"`
 	}{
 		Token: tokenString,
 	})
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }
 
 func (api *API) RefreshHandler(w http.ResponseWriter, r *http.Request) {
@@ -93,11 +96,14 @@ func (api *API) RefreshHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(struct {
+	err = json.NewEncoder(w).Encode(struct {
 		Token string `json:"token"`
 	}{
 		Token: tokenString,
 	})
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }
 
 func (api *API) ValidateHandler(w http.ResponseWriter, r *http.Request) {
@@ -116,7 +122,11 @@ func (api *API) ValidateHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(struct{}{})
+	err := json.NewEncoder(w).Encode(struct{}{})
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }
 
 type RegisterRequestBody struct {

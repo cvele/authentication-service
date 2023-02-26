@@ -30,5 +30,8 @@ func downCreateUserTable(tx *sql.Tx) error {
 		return err
 	}
 	_, err = tx.Exec(`DROP DATABASE IF EXISTS authentication`)
+	if err != nil {
+		return err
+	}
 	return nil
 }
