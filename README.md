@@ -78,38 +78,38 @@ curl --request POST \
 Request:
 
 ```
-POST /refresh
-Content-Type: application/json
-
-{
-  "refresh_token": "<refresh_token>"
-}
-
+curl --request POST \
+  --url http://localhost:8080/refresh \
+  --header 'Content-Type: application/json' \
+  --data '{
+	"refresh_token": "<token>"
+}'
 ```
 
-Response:
-
-```
-HTTP/1.1 200 OK
-Content-Type: application/json
-
-{
-  "token": "<access_token>"
-}
-```
-
-
-`/change-password` - 
+`/validate` - Validate JWT
 
 Request:
 
 ```
-POST /change-password 
-Content-Type: application/json
-Authorization: Bearer <token>
+curl --request POST \
+  --url http://localhost:8080/validate \
+  --header 'Content-Type: application/json' \
+  --data '{
+	"token": "<token>"
+}'
+```
 
-{
-    "current_password": "password123",
-    "new_password": "newpassword456"
-}
+`/change-password` - Change password
+
+Request:
+
+```
+curl --request POST \
+  --url http://localhost:8080/change-password \
+  --header 'Content-Type: application/json' \
+  --header 'Authorization: Bearer <token>' \
+  --data '{
+	"old_password": "newpassword",
+	"new_password": "newpassword2"
+}'
 ```
