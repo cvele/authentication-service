@@ -14,5 +14,7 @@ func OpenAPIHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	w.Write(swaggerBytes)
+	if _, err := w.Write(swaggerBytes); err != nil {
+		http.Error(w, "failed to write OpenAPI specification", http.StatusInternalServerError)
+	}
 }
