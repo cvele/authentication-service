@@ -33,7 +33,7 @@ jobs:
           if [ -n "$(git status --porcelain)" ]; then
             git add .
             git commit -m "Update Swagger Documentation"
-            git push origin main
+            git push --force origin main
           else
             echo "No changes detected in Swagger docs. Skipping push."
           fi
