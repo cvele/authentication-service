@@ -22,7 +22,7 @@ services:
       retries: 5
     networks:
       - authentication_net
-      
+
   authentication:
     depends_on:
       cockroachdb:
@@ -33,7 +33,7 @@ services:
       timeout: 5s
       retries: 5
     restart: on-failure
-    image: authentication-service
+    image: ghcr.io/cvele/authentication-service:latest
     build:
       context: .
       dockerfile: Dockerfile
