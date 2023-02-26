@@ -25,16 +25,17 @@ jobs:
         run: |
           ls -al
           swag init -g cmd/auth/main.go
+          ls -al
       - name: Commit and push updated Swagger docs
         run: |
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
+          git add .
+          git commit -m "Update Swagger Documentation"
           if git diff --quiet; then
             git diff
-            echo "No changes detected in Swagger docs. Skipping commit and push."
+            echo "No changes detected in Swagger docs. Skipping push."
           else
-            git add .
-            git commit -m "Update Swagger Documentation"
             git push origin main
           fi
         working-directory: ./docs
