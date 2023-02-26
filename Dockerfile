@@ -12,10 +12,9 @@ RUN go build -o /app/authentication-migrations cmd/migrations/main.go
 RUN chmod +x /app/authentication-migrations /app/authentication-service
 # Final stage
 FROM alpine:3.14
-RUN apk add --no-cache ca-certificates
+RUN apk add --no-cache ca-certificates curl
 
 WORKDIR /app
-
 COPY --from=build /app/authentication-service /usr/local/bin/authentication-service
 COPY --from=build /app/authentication-migrations /usr/local/bin/authentication-migrations
 COPY --from=build /app/migrations migrations/.

@@ -39,6 +39,9 @@ func main() {
 	r.HandleFunc("/validate", api.ValidateHandler).Methods("POST")
 	r.HandleFunc("/register", api.RegisterHandler).Methods("POST")
 	r.HandleFunc("/change-password", api.ChangePasswordHandler).Methods("POST")
+	r.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	})
 
 	// Create server
 	srv := &http.Server{
