@@ -1,7 +1,6 @@
 package config
 
 import (
-	"errors"
 	"fmt"
 	"time"
 
@@ -25,7 +24,7 @@ func Load() (*Config, error) {
 	var cfg Config
 	err := envconfig.Process("", &cfg)
 	if err != nil {
-		return nil, errors.New(fmt.Sprintf("error loading configuration: %v", err))
+		return nil, fmt.Errorf("error loading configuration: %v", err)
 	}
 
 	return &cfg, nil
