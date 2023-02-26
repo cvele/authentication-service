@@ -37,6 +37,5 @@ jobs:
           else
             echo "No changes detected in Swagger docs. Skipping push."
           fi
-        working-directory: ./docs
 
 
