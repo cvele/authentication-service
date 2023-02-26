@@ -31,11 +31,11 @@ jobs:
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
           if [ -n "$(git status --porcelain)" ]; then
-            echo "No changes detected in Swagger docs. Skipping push."
-          else
             git add .
             git commit -m "Update Swagger Documentation"
             git push origin main
+          else
+            echo "No changes detected in Swagger docs. Skipping push."
           fi
         working-directory: ./docs
 
