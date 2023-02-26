@@ -1,8 +1,6 @@
 name: Go Sec
 
 on:
-  push:
-    branches: [ main ]
   pull_request:
     branches: [ main ]
 
@@ -23,7 +21,7 @@ jobs:
         run: go mod download
 
       - name: Run gosec
-        uses: securego/gosec-action@v2
+        uses: securego/gosec@master
         with:
           # Path to the directory containing the Go source files to analyze
           path: ./
