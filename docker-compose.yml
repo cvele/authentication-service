@@ -33,7 +33,7 @@ services:
       timeout: 5s
       retries: 5
     restart: on-failure
-    image: ghcr.io/cvele/authentication-service:latest
+    image: ghcr.io/cvele/authentication-service
     build:
       context: .
       dockerfile: Dockerfile
