@@ -24,7 +24,9 @@ jobs:
       - name: Dependencies
         run: go mod download
       - name: Generate Swag Documentation
-        run: swag init -g cmd/auth/main.go
+        run: |
+          ls -al
+          swag init -g cmd/auth/main.go
       - name: Commit changes
         run: |
           git config --global user.email "action@github.com"
