@@ -12,7 +12,7 @@ require (
 	github.com/pressly/goose/v3 v3.9.0
 	github.com/rs/zerolog v1.29.0
 	github.com/swaggo/swag v1.16.2
-	golang.org/x/crypto v0.17.0
+	golang.org/x/crypto v0.18.0
 )
 
 require (
@@ -34,5 +34,5 @@ require (
 require (
 	github.com/mattn/go-colorable v0.1.12 // indirect
 	github.com/mattn/go-isatty v0.0.17 // indirect
-	golang.org/x/sys v0.15.0 // indirect; indirgoect
+	golang.org/x/sys v0.16.0 // indirect; indirgoect
 )
