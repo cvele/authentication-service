@@ -3,7 +3,7 @@ module github.com/cvele/authentication-service
 go 1.19
 
 require (
-	github.com/cockroachdb/cockroach-go/v2 v2.2.20
+	github.com/cockroachdb/cockroach-go/v2 v2.3.7
 	github.com/dgrijalva/jwt-go/v4 v4.0.0-preview1
 	github.com/google/uuid v1.3.0
 	github.com/gorilla/mux v1.8.0
