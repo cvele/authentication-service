@@ -12,7 +12,7 @@ require (
 	github.com/pressly/goose/v3 v3.9.0
 	github.com/rs/zerolog v1.32.0
 	github.com/swaggo/swag v1.16.2
-	golang.org/x/crypto v0.18.0
+	golang.org/x/crypto v0.26.0
 )
 
 require (
@@ -25,14 +25,14 @@ require (
 	github.com/go-openapi/swag v0.19.15 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/mailru/easyjson v0.7.6 // indirect
-	golang.org/x/net v0.17.0 // indirect
-	golang.org/x/text v0.14.0 // indirect
-	golang.org/x/tools v0.7.0 // indirect
+	golang.org/x/net v0.25.0 // indirect
+	golang.org/x/text v0.17.0 // indirect
+	golang.org/x/tools v0.21.1-0.20240508182429-e35e4ccd0d2d // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
 
 require (
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.19 // indirect
-	golang.org/x/sys v0.16.0 // indirect; indirgoect
+	golang.org/x/sys v0.23.0 // indirect; indirgoect
 )
