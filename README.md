@@ -1,5 +1,6 @@
 # Authentication Service
 
+@TRIGGER
 Simple authentication service with support for JWT tokens.
 
 ## Overview
